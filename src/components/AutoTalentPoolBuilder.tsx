@@ -1,13 +1,29 @@
-import { useState } from 'react';
-import { Users, Play, Pause, Settings, TrendingUp, Clock, CheckCircle2, AlertTriangle, Zap } from 'lucide-react';
-import { Card } from './ui/card';
-import { Button } from './ui/button';
-import { Badge } from './ui/badge';
-import { Switch } from './ui/switch';
-import { Label } from './ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Progress } from './ui/progress';
-import { toast } from 'sonner';
+import { useState } from "react";
+import {
+  Users,
+  Play,
+  Pause,
+  Settings,
+  TrendingUp,
+  Clock,
+  CheckCircle2,
+  AlertTriangle,
+  Zap,
+} from "lucide-react";
+import { Card } from "./ui/card";
+import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
+import { Switch } from "./ui/switch";
+import { Label } from "./ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import { Progress } from "./ui/progress";
+import { toast } from "sonner";
 
 interface TalentPool {
   id: string;
@@ -17,88 +33,90 @@ interface TalentPool {
   currentSize: number;
   autoFillEnabled: boolean;
   searchQuery: string;
-  frequency: 'daily' | 'weekly' | 'bi-weekly';
+  frequency: "daily" | "weekly" | "bi-weekly";
   sources: string[];
   lastRun?: string;
   nextRun?: string;
-  status: 'active' | 'paused' | 'completed';
+  status: "active" | "paused" | "completed";
   addedThisWeek: number;
 }
 
 export function AutoTalentPoolBuilder() {
+  console.log("Rendering AutoTalentPoolBuilder");
   const [talentPools, setTalentPools] = useState<TalentPool[]>([
     {
-      id: '1',
-      name: 'Senior React Developers',
-      description: 'Experienced React devs for enterprise projects',
+      id: "1",
+      name: "Senior React Developers",
+      description: "Experienced React devs for enterprise projects",
       targetSize: 100,
       currentSize: 73,
       autoFillEnabled: true,
-      searchQuery: '(React OR ReactJS) AND (Senior OR Lead) AND experience:5+',
-      frequency: 'daily',
-      sources: ['LinkedIn', 'GitHub'],
-      lastRun: '2 hours ago',
-      nextRun: 'Tomorrow at 9:00 AM',
-      status: 'active',
+      searchQuery: "(React OR ReactJS) AND (Senior OR Lead) AND experience:5+",
+      frequency: "daily",
+      sources: ["LinkedIn", "GitHub"],
+      lastRun: "2 hours ago",
+      nextRun: "Tomorrow at 9:00 AM",
+      status: "active",
       addedThisWeek: 12,
     },
     {
-      id: '2',
-      name: 'Full Stack Engineers - Remote',
-      description: 'Remote-ready full stack talent',
+      id: "2",
+      name: "Full Stack Engineers - Remote",
+      description: "Remote-ready full stack talent",
       targetSize: 150,
       currentSize: 145,
       autoFillEnabled: true,
-      searchQuery: '"Full stack" AND (React OR Vue) AND (Node.js OR Python) AND remote',
-      frequency: 'weekly',
-      sources: ['LinkedIn', 'GitHub', 'Indeed'],
-      lastRun: '1 day ago',
-      nextRun: 'Next Monday at 9:00 AM',
-      status: 'active',
+      searchQuery:
+        '"Full stack" AND (React OR Vue) AND (Node.js OR Python) AND remote',
+      frequency: "weekly",
+      sources: ["LinkedIn", "GitHub", "Indeed"],
+      lastRun: "1 day ago",
+      nextRun: "Next Monday at 9:00 AM",
+      status: "active",
       addedThisWeek: 8,
     },
     {
-      id: '3',
-      name: 'Backend Engineers - Python',
-      description: 'Python backend specialists',
+      id: "3",
+      name: "Backend Engineers - Python",
+      description: "Python backend specialists",
       targetSize: 80,
       currentSize: 45,
       autoFillEnabled: false,
-      searchQuery: 'Backend AND Python AND (AWS OR GCP) AND experience:3+',
-      frequency: 'bi-weekly',
-      sources: ['GitHub', 'Stack Overflow'],
-      lastRun: '5 days ago',
-      nextRun: 'Paused',
-      status: 'paused',
+      searchQuery: "Backend AND Python AND (AWS OR GCP) AND experience:3+",
+      frequency: "bi-weekly",
+      sources: ["GitHub", "Stack Overflow"],
+      lastRun: "5 days ago",
+      nextRun: "Paused",
+      status: "paused",
       addedThisWeek: 0,
     },
     {
-      id: '4',
-      name: 'DevOps Engineers',
-      description: 'Infrastructure & deployment experts',
+      id: "4",
+      name: "DevOps Engineers",
+      description: "Infrastructure & deployment experts",
       targetSize: 50,
       currentSize: 50,
       autoFillEnabled: true,
-      searchQuery: 'DevOps AND (Kubernetes OR Docker) AND (AWS OR Azure)',
-      frequency: 'weekly',
-      sources: ['LinkedIn', 'GitHub'],
-      lastRun: '3 days ago',
-      nextRun: 'Pool is full',
-      status: 'completed',
+      searchQuery: "DevOps AND (Kubernetes OR Docker) AND (AWS OR Azure)",
+      frequency: "weekly",
+      sources: ["LinkedIn", "GitHub"],
+      lastRun: "3 days ago",
+      nextRun: "Pool is full",
+      status: "completed",
       addedThisWeek: 0,
     },
   ]);
 
   const handleToggleAutoFill = (poolId: string) => {
-    setTalentPools(pools =>
-      pools.map(pool => {
+    setTalentPools((pools) =>
+      pools.map((pool) => {
         if (pool.id === poolId) {
           const newStatus = !pool.autoFillEnabled;
-          toast.success(newStatus ? 'Auto-fill enabled' : 'Auto-fill paused');
+          toast.success(newStatus ? "Auto-fill enabled" : "Auto-fill paused");
           return {
             ...pool,
             autoFillEnabled: newStatus,
-            status: newStatus ? 'active' : 'paused',
+            status: newStatus ? "active" : "paused",
           };
         }
         return pool;
@@ -110,13 +128,16 @@ export function AutoTalentPoolBuilder() {
     toast.loading(`Running search: ${pool.name}...`);
     setTimeout(() => {
       const newCandidates = Math.floor(Math.random() * 8) + 3;
-      setTalentPools(pools =>
-        pools.map(p => {
+      setTalentPools((pools) =>
+        pools.map((p) => {
           if (p.id === pool.id) {
             return {
               ...p,
-              currentSize: Math.min(p.currentSize + newCandidates, p.targetSize),
-              lastRun: 'Just now',
+              currentSize: Math.min(
+                p.currentSize + newCandidates,
+                p.targetSize
+              ),
+              lastRun: "Just now",
               addedThisWeek: p.addedThisWeek + newCandidates,
             };
           }
@@ -128,8 +149,8 @@ export function AutoTalentPoolBuilder() {
   };
 
   const handleUpdateFrequency = (poolId: string, frequency: string) => {
-    setTalentPools(pools =>
-      pools.map(pool => {
+    setTalentPools((pools) =>
+      pools.map((pool) => {
         if (pool.id === poolId) {
           toast.success(`Updated frequency to ${frequency}`);
           return { ...pool, frequency: frequency as any };
@@ -166,7 +187,7 @@ export function AutoTalentPoolBuilder() {
             <Users className="w-4 h-4 text-blue-600" />
           </div>
           <div className="text-2xl">
-            {talentPools.filter(p => p.status === 'active').length}
+            {talentPools.filter((p) => p.status === "active").length}
           </div>
           <p className="text-xs text-gray-600 mt-1">Auto-filling now</p>
         </Card>
@@ -203,25 +224,35 @@ export function AutoTalentPoolBuilder() {
 
       {/* How It Works */}
       <Card className="p-4 bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200">
-        <h3 className="text-sm mb-3">🤖 How Automatic Talent Pool Building Works</h3>
+        <h3 className="text-sm mb-3">
+          🤖 How Automatic Talent Pool Building Works
+        </h3>
         <div className="grid grid-cols-4 gap-3 text-xs">
           <div className="text-center">
-            <div className="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center mx-auto mb-2">1</div>
+            <div className="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center mx-auto mb-2">
+              1
+            </div>
             <p className="font-medium">Set Target</p>
             <p className="text-gray-600">Define pool size goal</p>
           </div>
           <div className="text-center">
-            <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-2">2</div>
+            <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-2">
+              2
+            </div>
             <p className="font-medium">Auto Search</p>
             <p className="text-gray-600">Runs saved search automatically</p>
           </div>
           <div className="text-center">
-            <div className="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center mx-auto mb-2">3</div>
+            <div className="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center mx-auto mb-2">
+              3
+            </div>
             <p className="font-medium">Enrich & Import</p>
             <p className="text-gray-600">Finds contacts, adds to pool</p>
           </div>
           <div className="text-center">
-            <div className="w-8 h-8 bg-orange-600 text-white rounded-full flex items-center justify-center mx-auto mb-2">4</div>
+            <div className="w-8 h-8 bg-orange-600 text-white rounded-full flex items-center justify-center mx-auto mb-2">
+              4
+            </div>
             <p className="font-medium">Maintain</p>
             <p className="text-gray-600">Keeps pool at target size</p>
           </div>
@@ -245,14 +276,18 @@ export function AutoTalentPoolBuilder() {
                       <h3 className="text-sm">{pool.name}</h3>
                       <Badge
                         className={
-                          pool.status === 'active'
-                            ? 'bg-green-100 text-green-700'
-                            : pool.status === 'completed'
-                            ? 'bg-blue-100 text-blue-700'
-                            : 'bg-gray-100 text-gray-600'
+                          pool.status === "active"
+                            ? "bg-green-100 text-green-700"
+                            : pool.status === "completed"
+                            ? "bg-blue-100 text-blue-700"
+                            : "bg-gray-100 text-gray-600"
                         }
                       >
-                        {pool.status === 'active' ? '● Active' : pool.status === 'completed' ? '✓ Complete' : '⏸ Paused'}
+                        {pool.status === "active"
+                          ? "● Active"
+                          : pool.status === "completed"
+                          ? "✓ Complete"
+                          : "⏸ Paused"}
                       </Badge>
                     </div>
                     <p className="text-xs text-gray-600">{pool.description}</p>
@@ -263,9 +298,7 @@ export function AutoTalentPoolBuilder() {
                       onCheckedChange={() => handleToggleAutoFill(pool.id)}
                       disabled={isFull}
                     />
-                    <Label className="text-xs text-gray-600">
-                      Auto-fill
-                    </Label>
+                    <Label className="text-xs text-gray-600">Auto-fill</Label>
                   </div>
                 </div>
 
@@ -306,7 +339,11 @@ export function AutoTalentPoolBuilder() {
                     <p className="text-xs text-gray-600 mb-1">Sources:</p>
                     <div className="flex flex-wrap gap-1">
                       {pool.sources.map((source) => (
-                        <Badge key={source} variant="outline" className="text-xs">
+                        <Badge
+                          key={source}
+                          variant="outline"
+                          className="text-xs"
+                        >
                           {source}
                         </Badge>
                       ))}
@@ -316,7 +353,9 @@ export function AutoTalentPoolBuilder() {
                     <p className="text-xs text-gray-600 mb-1">Frequency:</p>
                     <Select
                       value={pool.frequency}
-                      onValueChange={(value) => handleUpdateFrequency(pool.id, value)}
+                      onValueChange={(value) =>
+                        handleUpdateFrequency(pool.id, value)
+                      }
                       disabled={!pool.autoFillEnabled}
                     >
                       <SelectTrigger className="h-8 text-xs">
@@ -342,9 +381,7 @@ export function AutoTalentPoolBuilder() {
                       <TrendingUp className="w-3 h-3 inline mr-1" />
                       Added this week: {pool.addedThisWeek}
                     </div>
-                    <div>
-                      Next: {pool.nextRun}
-                    </div>
+                    <div>Next: {pool.nextRun}</div>
                   </div>
                   <div className="flex items-center gap-2">
                     <Button
