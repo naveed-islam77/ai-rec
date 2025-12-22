@@ -42,7 +42,6 @@ interface TalentPool {
 }
 
 export function AutoTalentPoolBuilder() {
-  console.log("Rendering AutoTalentPoolBuilder");
   const [talentPools, setTalentPools] = useState<TalentPool[]>([
     {
       id: "1",
